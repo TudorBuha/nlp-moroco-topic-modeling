@@ -1,9 +1,4 @@
-"""LDA explorer tab — pyLDAvis embed + topic-keyword table.
-
-Reads only LDA artifacts that Mihai's pipeline (Steps M1–M4) is expected
-to write into `results/lda/`. Renders graceful fallbacks when files
-aren't there yet.
-"""
+"""LDA explorer tab — pyLDAvis embed + topic-keyword table + coherence curve."""
 
 from __future__ import annotations
 
@@ -14,10 +9,6 @@ from src import paths
 
 from .. import utils
 
-LDA_TOPIC_TABLE_CSV = paths.RESULTS_LDA / "topic_keywords.csv"
-LDA_LDAVIS_HTML = paths.RESULTS_LDA / "ldavis.html"
-LDA_COHERENCE_PNG = paths.RESULTS_LDA / "coherence_curve.png"
-
 
 def render() -> None:
     utils.section_header(
@@ -25,11 +16,10 @@ def render() -> None:
         "Discovered topics from the Gensim LDA model.",
     )
 
-    table = utils.load_csv_or_none(LDA_TOPIC_TABLE_CSV)
+    table = utils.load_csv_or_none(paths.LDA_TOPIC_TABLE_CSV)
     if table is None:
         utils.missing_artifact(
-            LDA_TOPIC_TABLE_CSV,
-            "the LDA pipeline (Steps M1–M3) — Mihai's side",
+            paths.LDA_TOPIC_TABLE_CSV, "python scripts/inspect_lda.py"
         )
     else:
         st.subheader("Topic-keyword table")
@@ -37,15 +27,28 @@ def render() -> None:
 
     st.divider()
     st.subheader("Coherence sweep over K")
-    if LDA_COHERENCE_PNG.exists():
-        st.image(str(LDA_COHERENCE_PNG))
-    else:
-        utils.missing_artifact(LDA_COHERENCE_PNG, "Step M2.5 (coherence curve)")
+    sweep = utils.load_csv_or_none(paths.LDA_SWEEP_CSV)
+    if sweep is not None:
+        sweep = sweep.sort_values("k")
+        st.line_chart(sweep.set_index("k")["c_v"], use_container_width=True)
+        best_idx = sweep["c_v"].idxmax()
+        st.caption(
+            f"Best K = **{int(sweep.loc[best_idx, 'k'])}** "
+            f"with C_v = {sweep.loc[best_idx, 'c_v']:.4f}"
+        )
+    if paths.LDA_COHERENCE_PNG.exists():
+        st.image(str(paths.LDA_COHERENCE_PNG))
+    elif sweep is None:
+        utils.missing_artifact(
+            paths.LDA_SWEEP_CSV, "python scripts/train_lda.py"
+        )
 
     st.divider()
     st.subheader("pyLDAvis interactive visualization")
-    html = utils.load_html_or_none(LDA_LDAVIS_HTML)
+    html = utils.load_html_or_none(paths.LDA_LDAVIS_HTML)
     if html is None:
-        utils.missing_artifact(LDA_LDAVIS_HTML, "Step M3.3 (`pyLDAvis.save_html`)")
+        utils.missing_artifact(
+            paths.LDA_LDAVIS_HTML, "python scripts/train_lda.py"
+        )
     else:
         components.html(html, height=900, scrolling=True)

@@ -1,0 +1,9 @@
+{
+  "n_topics": 15,
+  "n_test": 1197,
+  "n_evaluated": 1197,
+  "n_empty_bow": 0,
+  "nmi_test": 0.34587639680239246,
+  "purity_test": 0.5906432748538012,
+  "_dict_size": 5357
+}

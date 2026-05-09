@@ -1,7 +1,7 @@
 """Step T1 — Encode train + test documents with `readerbench/robert-base`.
 
-Reads `data/processed/{train,test}.parquet` (Mihai's output) and writes
-`results/bertopic/embeddings_{train,test}.npy`.
+Reads `data/processed/{train,test}.parquet` (produced by `scripts/preprocess.py`)
+and writes `results/bertopic/embeddings_{train,test}.npy`.
 
 Usage:
     python scripts/encode_docs.py
@@ -40,7 +40,7 @@ def _encode_split(parquet_path, out_path, text_col, model, batch_size, max_lengt
     if not parquet_path.exists():
         raise SystemExit(
             f"Missing {parquet_path}.\n"
-            "Wait for Mihai to finish Phase 1 (preprocessing + train/test split)."
+            "Run `python scripts/preprocess.py` first."
         )
     df = pd.read_parquet(parquet_path)
     print(f"loaded {len(df):,} rows from {parquet_path}")

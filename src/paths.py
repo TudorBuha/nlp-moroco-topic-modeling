@@ -17,6 +17,21 @@ RESULTS = ROOT / "results"
 RESULTS_LDA = RESULTS / "lda"
 RESULTS_BERTOPIC = RESULTS / "bertopic"
 
+# LDA artifacts
+LDA_DICTIONARY = RESULTS_LDA / "dictionary.dict"
+LDA_TRAIN_CORPUS = RESULTS_LDA / "train_corpus.mm"
+LDA_TEST_CORPUS = RESULTS_LDA / "test_corpus.mm"
+LDA_TRAIN_TOKENS = RESULTS_LDA / "train_tokens.pkl"
+LDA_TEST_TOKENS = RESULTS_LDA / "test_tokens.pkl"
+LDA_MODEL_MAIN = RESULTS_LDA / "model_main.gensim"
+LDA_SWEEP_CSV = RESULTS_LDA / "coherence_sweep.csv"
+LDA_COHERENCE_PNG = RESULTS_LDA / "coherence_curve.png"
+LDA_TOPIC_TABLE_CSV = RESULTS_LDA / "topic_keywords.csv"
+LDA_TOPIC_TABLE_LABELED_CSV = RESULTS_LDA / "topic_keywords_labeled.csv"
+LDA_LDAVIS_HTML = RESULTS_LDA / "ldavis.html"
+LDA_TEST_EVAL_JSON = RESULTS_LDA / "test_evaluation.json"
+LDA_TEST_CONFUSION_CSV = RESULTS_LDA / "test_confusion_matrix.csv"
+
 # BERTopic artifacts
 EMBEDDINGS_TRAIN = RESULTS_BERTOPIC / "embeddings_train.npy"
 EMBEDDINGS_TEST = RESULTS_BERTOPIC / "embeddings_test.npy"

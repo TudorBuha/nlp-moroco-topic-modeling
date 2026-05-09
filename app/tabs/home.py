@@ -10,42 +10,51 @@ from src import paths
 from .. import utils
 
 
-def _headline_metrics() -> pd.DataFrame:
-    """Pull the few numbers that summarize where we're at."""
-    rows: list[dict] = []
+def _fmt(value, suffix: str = "") -> str:
+    if value is None:
+        return "—"
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return "—"
+    if pd.isna(v):
+        return "—"
+    if suffix == "%":
+        return f"{v * 100:.2f}%"
+    return f"{v:.4f}"
 
-    bert_eval = utils.load_json_or_none(paths.TEST_EVAL_JSON)
-    if bert_eval is not None:
-        rows.append(
-            {
-                "Method": "BERTopic",
-                "NMI (test)": round(bert_eval.get("nmi_test", float("nan")), 4),
-                "Purity (test)": round(bert_eval.get("purity_test", float("nan")), 4),
-                "Outlier % (test)": round(
-                    bert_eval.get("outlier_pct_test", float("nan")) * 100, 2
-                ),
-            }
-        )
-    else:
-        rows.append(
-            {
-                "Method": "BERTopic",
-                "NMI (test)": "—",
-                "Purity (test)": "—",
-                "Outlier % (test)": "—",
-            }
-        )
 
-    rows.append(
-        {
-            "Method": "LDA",
+def _row(method: str, eval_json: dict | None, has_outliers: bool) -> dict:
+    if eval_json is None:
+        return {
+            "Method": method,
             "NMI (test)": "—",
             "Purity (test)": "—",
-            "Outlier % (test)": "n/a",
+            "# topics": "—",
+            "Outlier % (test)": "n/a" if not has_outliers else "—",
         }
-    )
+    return {
+        "Method": method,
+        "NMI (test)": _fmt(eval_json.get("nmi_test")),
+        "Purity (test)": _fmt(eval_json.get("purity_test")),
+        "# topics": str(eval_json.get("n_topics", "—")),
+        "Outlier % (test)": (
+            _fmt(eval_json.get("outlier_pct_test"), "%")
+            if has_outliers
+            else "n/a"
+        ),
+    }
 
-    return pd.DataFrame(rows)
+
+def _headline_metrics() -> pd.DataFrame:
+    bert_eval = utils.load_json_or_none(paths.TEST_EVAL_JSON)
+    lda_eval = utils.load_json_or_none(paths.LDA_TEST_EVAL_JSON)
+    return pd.DataFrame(
+        [
+            _row("LDA", lda_eval, has_outliers=False),
+            _row("BERTopic", bert_eval, has_outliers=True),
+        ]
+    )
 
 
 def _artifact_status() -> pd.DataFrame:

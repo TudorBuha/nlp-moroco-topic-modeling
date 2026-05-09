@@ -9,13 +9,10 @@ from src import paths
 
 from .. import utils
 
-LDA_EVAL_JSON = paths.RESULTS_LDA / "test_evaluation.json"
-LDA_CONFUSION_CSV = paths.RESULTS_LDA / "test_confusion_matrix.csv"
-
 
 def _side_by_side_metrics() -> pd.DataFrame:
     bert_eval = utils.load_json_or_none(paths.TEST_EVAL_JSON) or {}
-    lda_eval = utils.load_json_or_none(LDA_EVAL_JSON) or {}
+    lda_eval = utils.load_json_or_none(paths.LDA_TEST_EVAL_JSON) or {}
 
     def _fmt(d: dict, key: str, suffix: str = "") -> str:
         if key not in d or d[key] is None:
@@ -56,8 +53,9 @@ def _render_confusion(label: str, csv_path) -> None:
     if cm is None:
         utils.missing_artifact(
             csv_path,
-            "python scripts/evaluate_on_test.py" if "bertopic" in str(csv_path)
-            else "the LDA evaluation step (M3)",
+            "python scripts/evaluate_on_test.py"
+            if "bertopic" in str(csv_path)
+            else "python scripts/evaluate_lda.py",
         )
     else:
         st.dataframe(cm, use_container_width=True)
@@ -82,7 +80,7 @@ def render() -> None:
     )
     col_a, col_b = st.columns(2)
     with col_a:
-        _render_confusion("LDA", LDA_CONFUSION_CSV)
+        _render_confusion("LDA", paths.LDA_TEST_CONFUSION_CSV)
     with col_b:
         _render_confusion("BERTopic", paths.TEST_CONFUSION_CSV)
 

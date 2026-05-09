@@ -72,27 +72,37 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 └── README.md
 ```
 
-## BERTopic CLI workflow
-
-Once `data/processed/{train,test}.parquet` is available, run the whole Phase 2 pipeline:
+## End-to-end CLI workflow
 
 ```bash
-python scripts/encode_docs.py          # T1 — encode train + test with RoBERT
-python scripts/fit_bertopic.py         # T2 — fit BERTopic and save model
-python scripts/inspect_topics.py       # T3 — topic table + 3 HTML viz
-python scripts/hp_sweep.py             # T4 — hyperparameter sweep
-python scripts/embedding_ablation.py   # T5 — RoBERT vs multilingual MPNet
-python scripts/evaluate_on_test.py     # T6 — NMI / Purity / confusion matrix
-python scripts/stability_analysis.py   # T8 — multi-seed runs + bootstrap 95% CIs
-```
+# 0. Get data + spaCy Romanian model (one-time, ~50 MB + ~30 MB)
+python scripts/download_moroco.py
+python -m spacy download ro_core_news_sm
 
-Or run all of them in order:
+# 1. Preprocess. Use --max-per-class for a fast demo subset (~30 min total CPU run);
+#    omit it (or pass -1) to run on the full ~33k corpus.
+python scripts/preprocess.py --max-per-class 1000   # → data/processed/{train,test}.parquet
 
-```bash
+# 2a. Method A — LDA pipeline (gensim)
+python scripts/run_lda_pipeline.py
+#    or step by step:
+#    python scripts/train_lda.py        # build dict + corpus, sweep K, pyLDAvis
+#    python scripts/inspect_lda.py      # topic-keyword table
+#    python scripts/evaluate_lda.py     # NMI / Purity / confusion on test
+
+# 2b. Method B — BERTopic pipeline
 python scripts/run_bertopic_pipeline.py
+#    or step by step:
+#    python scripts/encode_docs.py            # T1 — encode train + test with RoBERT
+#    python scripts/fit_bertopic.py           # T2 — fit BERTopic and save model
+#    python scripts/inspect_topics.py         # T3 — topic table + 3 HTML viz
+#    python scripts/hp_sweep.py               # T4 — hyperparameter sweep
+#    python scripts/embedding_ablation.py     # T5 — RoBERT vs multilingual MPNet
+#    python scripts/evaluate_on_test.py       # T6 — NMI / Purity / confusion matrix
+#    python scripts/stability_analysis.py     # T8 — multi-seed runs + bootstrap 95% CIs
 ```
 
-Equivalently, open `notebooks/03_bertopic_full.ipynb` and run cells top-to-bottom.
+The notebooks `notebooks/03_bertopic_full.ipynb` and `notebooks/02_lda_full.ipynb` are equivalent to the above scripts and run cell-by-cell for interactive exploration.
 
 ## Application (GUI — assignment §2.3)
 
@@ -174,12 +184,21 @@ python -c "from transformers import AutoModel, AutoTokenizer; AutoTokenizer.from
 
 | Phase | Description | Status |
 |---|---|---|
-| 0 | Joint setup (repo, env, deps) | in progress |
-| 1 | Data preparation | not started |
-| 2 | Independent modeling (LDA + BERTopic) | not started |
-| 3 | Joint comparison | not started |
-| 4 | Final report | not started |
-| 5 | Presentation | not started |
+| 0 | Joint setup (repo, env, deps)         | done |
+| 1 | Data preparation (download + cleaning + split) | done |
+| 2 | Independent modeling (LDA + BERTopic) | done — both pipelines run end-to-end |
+| 3 | Joint comparison                      | done — see `docs/report.md` §4.4 |
+| 4 | Final report                          | done — `docs/report.md` |
+| 5 | Presentation                          | done — `streamlit run app/streamlit_app.py` |
+
+### Headline numbers (1,000 docs / class subset, 80 / 20 split, seed 42)
+
+| Method   | NMI   | Purity | # topics | Outlier % |
+|---|---:|---:|---:|---:|
+| LDA      | 0.346 | 0.591  | 15       | n/a       |
+| BERTopic | 0.334 | 0.598  | 19       | 3.7 %     |
+
+See `docs/report.md` §4 for the full results, including the K-sweep, hyperparameter grid, embedding ablation, and bootstrap / multi-seed stability analysis.
 
 ---
 

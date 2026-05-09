@@ -29,8 +29,11 @@ def evaluate_on_test(
     topic ids in `topics_pred` (so the caller can save a confusion matrix).
     """
     topics_pred, _ = topic_model.transform(list(docs_test), embeddings_test)
+    unique_topics = {int(t) for t in topics_pred}
+    n_topics_no_outlier = len(unique_topics - {-1})
     return {
         "n_test_docs": int(len(y_test)),
+        "n_topics": n_topics_no_outlier,
         "outlier_pct_test": outlier_proportion(topics_pred),
         "nmi_test": nmi_score(y_test, topics_pred),
         "purity_test": purity_score(y_test, topics_pred),

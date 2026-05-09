@@ -60,39 +60,20 @@ def _predict_bertopic(text: str) -> dict | None:
 def _predict_lda(text: str) -> dict | None:
     """Return {top_topics: [(topic_id, prob, keywords)]} or None if model missing.
 
-    Reads the LDA model + dictionary from `results/lda/`. The exact filenames
-    depend on Mihai's M2.3 (`model_K{N}.gensim`); we try a couple of common ones.
+    Loads the saved LDA model + dictionary and runs the same lemmatization +
+    BoW pipeline used at training time, then returns the top-3 topics with
+    keyword previews.
     """
-    model_path = paths.RESULTS_LDA / "model_main.gensim"
-    if not model_path.exists():
-        candidates = sorted(paths.RESULTS_LDA.glob("model_K*.gensim"))
-        if not candidates:
-            return None
-        model_path = candidates[0]
-    dictionary_path = paths.RESULTS_LDA / "dictionary.dict"
-
-    bundle = utils.get_lda_artifacts(model_path, dictionary_path)
+    bundle = utils.get_lda_artifacts(paths.LDA_MODEL_MAIN, paths.LDA_DICTIONARY)
     if bundle is None:
         return None
-    nlp = utils.get_spacy_ro()
-    if nlp is None:
-        return None
+
+    from src.lda.inference import predict_topic_distribution
 
     cleaned = clean_text(text)
-    doc = nlp(cleaned)
-    tokens = [t.lemma_ for t in doc if not t.is_space and t.lemma_]
-
-    bow = bundle["dictionary"].doc2bow(tokens)
-    if not bow:
-        return {"top_topics": []}
-
-    distribution = sorted(
-        bundle["model"].get_document_topics(bow), key=lambda x: -x[1]
-    )[:3]
-    top_topics = []
-    for tid, p in distribution:
-        keywords = [w for w, _ in bundle["model"].show_topic(tid, topn=10)]
-        top_topics.append({"topic_id": int(tid), "prob": float(p), "keywords": keywords})
+    top_topics = predict_topic_distribution(
+        bundle["model"], bundle["dictionary"], cleaned, top_n=3
+    )
     return {"top_topics": top_topics}
 
 
@@ -160,10 +141,10 @@ def render() -> None:
                 pred = _predict_lda(text)
             if pred is None:
                 st.info(
-                    "LDA model not available yet.\n\n"
-                    "Once the LDA pipeline (Steps M1–M3) saves "
-                    "`results/lda/model_K{N}.gensim` + "
-                    "`results/lda/dictionary.dict`, this card lights up."
+                    "LDA model not available yet. Run "
+                    "`python scripts/run_lda_pipeline.py` to populate "
+                    "`results/lda/model_main.gensim` + "
+                    "`results/lda/dictionary.dict`."
                 )
                 return
             if not pred["top_topics"]:

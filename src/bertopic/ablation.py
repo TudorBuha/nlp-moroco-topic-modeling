@@ -48,18 +48,36 @@ def run_one(
     y_test: Sequence,
     cfg: BERTopicConfig,
 ) -> dict:
-    """Fit BERTopic with a given embedding source and evaluate on the test set."""
-    model, _topics_train, _ = fit_bertopic(docs_train, embeddings_train, cfg)
-    topics_test, _ = model.transform(docs_test, embeddings_test)
+    """Fit BERTopic with a given embedding source and evaluate on the test set.
 
-    return {
-        "embedding": name,
-        "n_topics": n_topics(model, exclude_outlier=True),
-        "outlier_pct_test": outlier_proportion(topics_test),
-        "c_v_train": compute_cv_coherence(model, docs_train),
-        "nmi_test": nmi_score(y_test, topics_test),
-        "purity_test": purity_score(y_test, topics_test),
-    }
+    Wraps the fit in a try/except so a single embedding's failure (e.g.
+    c-TF-IDF vocabulary collapse with `min_df=5` on a tiny topic group)
+    doesn't kill the whole ablation table.
+    """
+    try:
+        model, _topics_train, _ = fit_bertopic(docs_train, embeddings_train, cfg)
+        topics_test, _ = model.transform(docs_test, embeddings_test)
+        return {
+            "embedding": name,
+            "n_topics": n_topics(model, exclude_outlier=True),
+            "outlier_pct_test": outlier_proportion(topics_test),
+            "c_v_train": compute_cv_coherence(model, docs_train),
+            "nmi_test": nmi_score(y_test, topics_test),
+            "purity_test": purity_score(y_test, topics_test),
+            "ok": True,
+            "error": "",
+        }
+    except Exception as exc:  # noqa: BLE001
+        return {
+            "embedding": name,
+            "n_topics": -1,
+            "outlier_pct_test": float("nan"),
+            "c_v_train": float("nan"),
+            "nmi_test": float("nan"),
+            "purity_test": float("nan"),
+            "ok": False,
+            "error": str(exc),
+        }
 
 
 def run_ablation(
@@ -75,8 +93,24 @@ def run_ablation(
     """Compare RoBERT vs. MPNet on identical docs/test split.
 
     If MPNet embeddings aren't provided they are computed on the fly.
+
+    The ablation uses a slightly relaxed `min_df=2` so the comparison doesn't
+    fail on encoders whose clustering happens to produce small topics with
+    sparse vocabulary; the structural pipeline (UMAP / HDBSCAN / c-TF-IDF)
+    is otherwise identical between the two runs.
     """
     cfg = cfg or BERTopicConfig()
+    cfg = BERTopicConfig(
+        n_neighbors=cfg.n_neighbors,
+        n_components=cfg.n_components,
+        min_dist=cfg.min_dist,
+        min_cluster_size=cfg.min_cluster_size,
+        min_df=2,
+        ngram_range=cfg.ngram_range,
+        language=cfg.language,
+        calculate_probabilities=cfg.calculate_probabilities,
+        random_state=cfg.random_state,
+    )
 
     if embeddings_mpnet_train is None:
         embeddings_mpnet_train = encode_with_sbert(docs_train, MPNET_NAME)
