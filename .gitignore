@@ -1,0 +1,74 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# --- Notebook ---
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Testing / coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- ML / NLP artifacts (too large or regenerable) ---
+data/raw/*
+!data/raw/README.md
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Trained models and embeddings
+results/**/*.gensim
+results/**/*.gensim.*
+results/**/*.dict
+results/**/*.mm
+results/**/*.mm.index
+results/**/*.npy
+results/**/*.npz
+results/**/*.pkl
+results/**/*.bin
+results/**/*.safetensors
+results/**/model_main/
+results/**/model_K*/
+
+# But keep the result folders themselves and any HTML/PNG/CSV outputs
+!results/**/.gitkeep
+
+# --- HuggingFace / Torch caches ---
+.cache/
+*.pt
+*.pth
+
+# --- OS / misc ---
+*.log
+.env
+.env.*
+!.env.example

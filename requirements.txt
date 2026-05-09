@@ -1,0 +1,33 @@
+# Python 3.10+ required
+
+# --- Core scientific stack ---
+numpy>=1.26,<2.0
+pandas>=2.1
+scikit-learn>=1.4
+scipy>=1.11
+
+# --- I/O ---
+pyarrow>=15.0          # parquet
+tqdm>=4.66
+
+# --- Classical NLP / LDA (Mihai) ---
+gensim>=4.3
+spacy>=3.7             # then: python -m spacy download ro_core_news_sm
+pyLDAvis>=3.4
+
+# --- Embeddings + BERTopic (Tudor) ---
+torch>=2.2
+transformers>=4.40
+sentence-transformers>=2.7
+bertopic>=0.16
+umap-learn>=0.5
+hdbscan>=0.8
+
+# --- Visualization ---
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.20           # used internally by BERTopic for HTML viz
+
+# --- Notebooks ---
+jupyterlab>=4.0
+ipywidgets>=8.1
