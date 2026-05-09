@@ -14,7 +14,7 @@ The goal is to train both methods on the same train/test split, evaluate them wi
 | Person | GitHub | Method |
 |---|---|---|
 | Buha Tudor | [@TudorBuha](https://github.com/TudorBuha) | **BERTopic** |
-| Ciorăscu Mihai | _TBD_ | **LDA** |
+| Ciorăscu Mihai | [@MihaiCiorascu](https://github.com/MihaiCiorascu) | **LDA** |
 
 See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full step-by-step plan.
 
@@ -30,19 +30,63 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 ├── notebooks/
 │   ├── 01_data_inspection.ipynb     # Mihai
 │   ├── 02_lda_full.ipynb            # Mihai
-│   └── 03_bertopic_full.ipynb       # Tudor
+│   └── 03_bertopic_full.ipynb       # Tudor — full T1–T7 pipeline
 ├── src/
+│   ├── paths.py         # shared filesystem paths
 │   ├── preprocessing/   # shared text loading, cleaning, tokenization (Mihai)
 │   ├── lda/             # LDA training + evaluation (Mihai)
 │   ├── bertopic/        # BERTopic pipeline + ablations (Tudor)
-│   └── evaluation/      # shared metrics: NMI, Purity, coherence helpers
+│   │   ├── embeddings.py    # RoBERT mean-pool encoder
+│   │   ├── model.py         # BERTopicConfig + factory
+│   │   ├── training.py      # fit / save / load
+│   │   ├── inspection.py    # topic-keyword tables, outlier %
+│   │   ├── visualizations.py# topics_2d / barchart / heatmap HTMLs
+│   │   ├── coherence.py     # C_v via gensim
+│   │   ├── hp_sweep.py      # T4 grid search
+│   │   ├── ablation.py      # T5 RoBERT vs MPNet
+│   │   └── evaluate.py      # T6 NMI / Purity on test
+│   └── evaluation/      # shared metrics: NMI, Purity, confusion matrix
+├── scripts/             # CLI wrappers around src/ modules (one per T-step)
+├── tests/               # pytest unit tests (no data needed)
 ├── results/
 │   ├── lda/             # trained models, dictionary, pyLDAvis HTML, plots
-│   └── bertopic/        # embeddings, fitted model, visualizations
-├── docs/                # final report, presentation, planning docs
-├── requirements.txt
+│   └── bertopic/        # embeddings, fitted model, visualizations, CSVs
+├── docs/                # final report, planning, Method B draft
+├── requirements.txt     # runtime deps
+├── requirements-dev.txt # + pytest, ruff, nbformat
+├── pyproject.toml       # pytest config
 └── README.md
 ```
+
+## Tudor's BERTopic CLI workflow
+
+Once Mihai's `data/processed/{train,test}.parquet` lands, run the whole Phase 2 pipeline:
+
+```bash
+python scripts/encode_docs.py          # T1 — encode train + test with RoBERT
+python scripts/fit_bertopic.py         # T2 — fit BERTopic and save model
+python scripts/inspect_topics.py       # T3 — topic table + 3 HTML viz
+python scripts/hp_sweep.py             # T4 — hyperparameter sweep
+python scripts/embedding_ablation.py   # T5 — RoBERT vs multilingual MPNet
+python scripts/evaluate_on_test.py     # T6 — NMI / Purity / confusion matrix
+```
+
+Or run all of them in order:
+
+```bash
+python scripts/run_bertopic_pipeline.py
+```
+
+Equivalently, open `notebooks/03_bertopic_full.ipynb` and run cells top-to-bottom.
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+Unit tests cover preprocessing helpers, evaluation metrics, BERTopic inspection logic, and import smoke checks. They don't need MOROCO data, so they run in seconds.
 
 ---
 
