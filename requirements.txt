@@ -31,3 +31,6 @@ plotly>=5.20           # used internally by BERTopic for HTML viz
 # --- Notebooks ---
 jupyterlab>=4.0
 ipywidgets>=8.1
+
+# --- GUI (Streamlit web app, see app/) ---
+streamlit>=1.30

@@ -7,6 +7,15 @@ Comparative study of two topic modeling approaches on the [MOROCO](https://githu
 
 The goal is to train both methods on the same train/test split, evaluate them with comparable metrics (C_v coherence, NMI, Purity), and produce a fair side-by-side comparison.
 
+The deliverables follow the assignment spec:
+
+1. Problem statement
+2. Proposed solution — 2.1 Theoretical aspects · 2.2 Dataset · 2.3 Application + diagram
+3. Implementation — libraries / functions
+4. Experiments and results
+
+See [`docs/report.md`](docs/report.md) for the joint report and [`docs/architecture.md`](docs/architecture.md) for the pipeline + application diagrams.
+
 ---
 
 ## Team
@@ -31,6 +40,10 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 │   ├── 01_data_inspection.ipynb     # MOROCO inspection
 │   ├── 02_lda_full.ipynb            # LDA pipeline
 │   └── 03_bertopic_full.ipynb       # BERTopic pipeline (T1–T7)
+├── app/                 # Streamlit GUI (assignment §2.3)
+│   ├── streamlit_app.py # entry point
+│   ├── utils.py         # artifact loading helpers
+│   └── tabs/            # one render() per tab
 ├── src/
 │   ├── paths.py         # shared filesystem paths
 │   ├── preprocessing/   # shared text loading, cleaning, tokenization
@@ -80,6 +93,28 @@ python scripts/run_bertopic_pipeline.py
 ```
 
 Equivalently, open `notebooks/03_bertopic_full.ipynb` and run cells top-to-bottom.
+
+## Application (GUI — assignment §2.3)
+
+The presentation deliverable is an interactive Streamlit app that wraps both trained models:
+
+```bash
+pip install -r requirements.txt   # streamlit is already in there
+streamlit run app/streamlit_app.py
+```
+
+Then open the URL Streamlit prints (default `http://localhost:8501`). The app has six tabs:
+
+- **Home** — project intro, dataset summary, headline metrics, pipeline status.
+- **Try it live** — paste any Romanian news text and see the topic each model assigns.
+- **LDA explorer** — coherence curve, topic-keyword table, embedded `pyLDAvis`.
+- **BERTopic explorer** — topic-keyword table with search + the three interactive HTML viz.
+- **Comparison** — side-by-side metrics, confusion matrices, embedding ablation.
+- **Stability** — multi-seed runs, bootstrap 95 % CIs, hyperparameter sweep.
+
+The app is a **read-only frontend** over the saved artifacts in `results/`. If a step hasn't been run yet, the corresponding tab shows a friendly *"run X first"* card instead of crashing — so the demo is robust during the presentation.
+
+See [`docs/architecture.md`](docs/architecture.md) for the full architecture diagram (Mermaid).
 
 ## Tests
 
