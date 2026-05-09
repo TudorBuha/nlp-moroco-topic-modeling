@@ -153,11 +153,13 @@ def render() -> None:
                     "(text may be too short or all out-of-vocabulary)."
                 )
                 return
+            labels = utils.lda_topic_label_map()
             for entry in pred["top_topics"]:
+                tid = int(entry["topic_id"])
+                name = labels.get(tid, f"Topic {tid}")
                 st.markdown(
-                    f"- Topic **#{entry['topic_id']}** "
-                    f"(prob {entry['prob']:.3f}): "
-                    + ", ".join(entry["keywords"])
+                    f"- **{name}** · `topic_id={tid}` · prob **{entry['prob']:.3f}**"
+                    f"\n\n  Keywords: " + ", ".join(entry["keywords"])
                 )
 
         _render_card("LDA prediction", _lda_body)

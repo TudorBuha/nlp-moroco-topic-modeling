@@ -23,6 +23,18 @@ def render() -> None:
         )
     else:
         st.subheader("Topic-keyword table")
+        labels = utils.lda_topic_label_map()
+        table = table.copy()
+        table.insert(
+            0,
+            "topic_name",
+            table["topic_id"].map(lambda tid: labels.get(int(tid), f"Topic {int(tid)}")),
+        )
+        st.caption(
+            "Each row is one LDA topic: **topic_name** is a manual GUI label; "
+            "**topic_id** is the gensim index (edit labels in "
+            "`results/lda/topic_keywords_labeled.csv` or `src/lda/gui_labels.py`)."
+        )
         st.dataframe(table, hide_index=True, use_container_width=True)
 
     st.divider()

@@ -14,6 +14,8 @@ from typing import Any
 
 import pandas as pd
 
+from src import paths
+
 try:  # streamlit is optional at import time so unit tests can run without it
     import streamlit as st
 except ImportError:  # pragma: no cover
@@ -64,6 +66,30 @@ def load_html_or_none(path: str | Path) -> str | None:
     return p.read_text(encoding="utf-8")
 
 
+@_cache_data
+def lda_topic_label_map() -> dict[int, str]:
+    """Merge built-in LDA GUI labels with optional overrides from topic_keywords_labeled.csv."""
+    from src.lda.gui_labels import DEFAULT_LDA_GUI_LABELS
+
+    merged: dict[int, str] = {int(k): str(v) for k, v in DEFAULT_LDA_GUI_LABELS.items()}
+    df = load_csv_or_none(paths.LDA_TOPIC_TABLE_LABELED_CSV)
+    if df is None or "label" not in df.columns:
+        return merged
+    for _, row in df.iterrows():
+        tid = int(row["topic_id"])
+        lbl = str(row.get("label", "") or "").strip()
+        if lbl:
+            merged[tid] = lbl
+    return merged
+
+
+def lda_topic_display_name(topic_id: int) -> str:
+    """Short human-readable name for Try-it-live / tables (falls back to 'Topic N')."""
+    m = lda_topic_label_map()
+    tid = int(topic_id)
+    return m.get(tid, f"Topic {tid}")
+
+
 def missing_artifact(path: str | Path, suggestion: str) -> None:
     """Render a friendly card explaining how to produce the missing file."""
     if st is None:  # pragma: no cover
@@ -95,7 +121,7 @@ def get_romanian_embedder():
 
 @_cache_resource
 def get_lda_artifacts(model_path: str | Path, dictionary_path: str | Path):
-    """Load LDA model + dictionary (Mihai's outputs) if they exist."""
+    """Load LDA model + dictionary if they exist on disk."""
     model_p = Path(model_path)
     dict_p = Path(dictionary_path)
     if not (model_p.exists() and dict_p.exists()):

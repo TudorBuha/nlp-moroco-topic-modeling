@@ -12,6 +12,7 @@ import sys
 import _bootstrap  # noqa: F401
 
 from src import paths
+from src.lda.gui_labels import DEFAULT_LDA_GUI_LABELS
 from src.lda.inspection import (
     attach_manual_labels,
     save_topic_table,
@@ -33,7 +34,7 @@ def main() -> int:
     table = topic_keyword_table(model, top_n=10)
     save_topic_table(table, paths.LDA_TOPIC_TABLE_CSV)
     save_topic_table(
-        attach_manual_labels(table, labels={}),
+        attach_manual_labels(table, labels=DEFAULT_LDA_GUI_LABELS),
         paths.LDA_TOPIC_TABLE_LABELED_CSV,
     )
     print(f"Saved {len(table)} topic rows -> {paths.LDA_TOPIC_TABLE_CSV}")
