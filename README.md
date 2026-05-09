@@ -44,7 +44,8 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 │   │   ├── coherence.py     # C_v via gensim
 │   │   ├── hp_sweep.py      # T4 grid search
 │   │   ├── ablation.py      # T5 RoBERT vs MPNet
-│   │   └── evaluate.py      # T6 NMI / Purity on test
+│   │   ├── evaluate.py      # T6 NMI / Purity on test
+│   │   └── stability.py     # T8 multi-seed stability runner
 │   └── evaluation/      # shared metrics: NMI, Purity, confusion matrix
 ├── scripts/             # CLI wrappers around src/ modules (one per T-step)
 ├── tests/               # pytest unit tests (no data needed)
@@ -69,6 +70,7 @@ python scripts/inspect_topics.py       # T3 — topic table + 3 HTML viz
 python scripts/hp_sweep.py             # T4 — hyperparameter sweep
 python scripts/embedding_ablation.py   # T5 — RoBERT vs multilingual MPNet
 python scripts/evaluate_on_test.py     # T6 — NMI / Purity / confusion matrix
+python scripts/stability_analysis.py   # T8 — multi-seed runs + bootstrap 95% CIs
 ```
 
 Or run all of them in order:

@@ -13,6 +13,7 @@ from .inspection import (
     topic_keyword_table,
 )
 from .model import BERTopicConfig, build_bertopic_model
+from .stability import run_multi_seed, save_stability, summarize
 from .training import fit_bertopic, load_model, save_model
 from .visualizations import save_default_visualizations
 
@@ -44,6 +45,10 @@ __all__ = [
     # ablation
     "run_ablation",
     "save_ablation",
+    # stability
+    "run_multi_seed",
+    "save_stability",
+    "summarize",
     # evaluation
     "evaluate_on_test",
     "save_evaluation",

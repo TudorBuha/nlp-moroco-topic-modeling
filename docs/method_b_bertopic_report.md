@@ -13,7 +13,9 @@ Numbers come straight from `results/bertopic/`:
 | Confusion matrix | `test_confusion_matrix.csv` |
 | HP sweep | `hp_sweep.csv` |
 | Ablation | `ablation.csv` |
-| Visualizations | `topics_2d.html`, `barchart.html`, `heatmap.html` |
+| Stability runs | `stability_runs.csv` / `stability_summary.csv` |
+| Bootstrap CIs | `bootstrap_nmi.json` / `bootstrap_purity.json` |
+| Visualizations | `topics_2d.html`, `barchart.html`, `heatmap.html`, `bootstrap_distributions.png` |
 
 ---
 
@@ -107,6 +109,38 @@ Inference on the held-out test split → BERTopic's `transform()` returns a topi
 Rows: BERTopic cluster id. Columns: MOROCO category. Source: `test_confusion_matrix.csv`.
 
 (Insert pretty version in the final PDF.)
+
+## 6.5 Stability analysis
+
+A single train/fit/test number doesn't say whether the result is reproducible. We address that from two angles.
+
+### Multi-seed runs
+
+We re-fit BERTopic **N = 10** times, varying only the UMAP `random_state`. Source: `stability_runs.csv` / `stability_summary.csv` (filled in by `scripts/stability_analysis.py`).
+
+| Metric | mean | std | min | max |
+|---|---|---|---|---|
+| `n_topics` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `outlier_pct_train` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `c_v_train` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `outlier_pct_test` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `nmi_test` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+| `purity_test` | _TBD_ | _TBD_ | _TBD_ | _TBD_ |
+
+> _Discussion (1 paragraph):_ how variable are the metrics across seeds, and what does that imply for our headline numbers in §6?
+
+### Bootstrap confidence intervals on test metrics
+
+For the chosen ("main") model, we resample the test predictions with replacement **B = 1000** times and report a **95 % percentile CI** on each metric. Source: `bootstrap_nmi.json` / `bootstrap_purity.json`.
+
+| Metric | Test point estimate | Bootstrap mean | 95 % CI |
+|---|---|---|---|
+| NMI | _TBD_ | _TBD_ | _[TBD, TBD]_ |
+| Purity | _TBD_ | _TBD_ | _[TBD, TBD]_ |
+
+> _Reading:_ a tight CI means the test-set NMI/Purity number is statistically reliable; a wide CI means the held-out test set may be too small or too imbalanced to support strong claims.
+
+(See `bootstrap_distributions.png` for the bootstrap histograms with the CIs marked.)
 
 ## 7. Strengths and weaknesses observed
 

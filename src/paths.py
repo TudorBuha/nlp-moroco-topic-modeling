@@ -30,6 +30,12 @@ ABLATION_CSV = RESULTS_BERTOPIC / "ablation.csv"
 TEST_EVAL_JSON = RESULTS_BERTOPIC / "test_evaluation.json"
 TEST_CONFUSION_CSV = RESULTS_BERTOPIC / "test_confusion_matrix.csv"
 
+# Stability / bootstrap (Step T8)
+STABILITY_RUNS_CSV = RESULTS_BERTOPIC / "stability_runs.csv"
+STABILITY_SUMMARY_CSV = RESULTS_BERTOPIC / "stability_summary.csv"
+BOOTSTRAP_NMI_JSON = RESULTS_BERTOPIC / "bootstrap_nmi.json"
+BOOTSTRAP_PURITY_JSON = RESULTS_BERTOPIC / "bootstrap_purity.json"
+
 
 def ensure_dirs() -> None:
     """Create all output directories if missing (idempotent)."""

@@ -27,6 +27,7 @@ STEPS = [
     ("T4: hp sweep", "hp_sweep.py"),
     ("T5: embedding ablation", "embedding_ablation.py"),
     ("T6: evaluate on test", "evaluate_on_test.py"),
+    ("T8: stability + bootstrap", "stability_analysis.py"),
 ]
 
 
