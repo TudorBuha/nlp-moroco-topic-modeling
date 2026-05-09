@@ -17,7 +17,7 @@ RESULTS = ROOT / "results"
 RESULTS_LDA = RESULTS / "lda"
 RESULTS_BERTOPIC = RESULTS / "bertopic"
 
-# BERTopic artifacts (Tudor)
+# BERTopic artifacts
 EMBEDDINGS_TRAIN = RESULTS_BERTOPIC / "embeddings_train.npy"
 EMBEDDINGS_TEST = RESULTS_BERTOPIC / "embeddings_test.npy"
 EMBEDDINGS_TRAIN_MPNET = RESULTS_BERTOPIC / "embeddings_train_mpnet.npy"

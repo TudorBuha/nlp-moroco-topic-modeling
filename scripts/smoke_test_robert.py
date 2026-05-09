@@ -1,4 +1,4 @@
-"""Tudor — Phase 1.C smoke test.
+"""Phase 1.C smoke test.
 
 Encodes 10 Romanian sentences with `readerbench/robert-base` and verifies
 that the output has shape [10, 768]. Run after `pip install -r requirements.txt`:

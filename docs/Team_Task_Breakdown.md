@@ -7,10 +7,10 @@
 
 ## Project Timeline — High-Level View
 
-| Phase | Description | Owner |
+| Phase | Description | Who |
 |---|---|---|
 | **Phase 0** | Joint setup | Both |
-| **Phase 1** | Data preparation | One person, both use |
+| **Phase 1** | Data preparation | One writes, both use |
 | **Phase 2** | Independent modeling | Mihai (LDA) \| Tudor (BERTopic) |
 | **Phase 3** | Joint comparison | Both |
 | **Phase 4** | Documentation | Both |
@@ -20,7 +20,7 @@
 
 ## Phase 0 — Joint Setup
 
-> **Owner:** Both teammates together
+> **Who:** Both together
 > **Estimated time:** ~1 day
 > **Goal:** Establish a shared workspace and confirm the project plan.
 
@@ -56,7 +56,7 @@
 
 ## Phase 1 — Data Preparation
 
-> **Owner:** ONE person writes the preprocessing module, BOTH use it.
+> **Who:** ONE person writes the preprocessing module, BOTH use it.
 > **Recommendation:** Mihai handles preprocessing (LDA needs more of it: lemmatization, stop-word removal, stricter cleaning).
 
 ### Mihai's Tasks (Phase 1, ~1–2 days)
@@ -114,7 +114,7 @@ While Mihai handles preprocessing, Tudor sets up the BERTopic side:
 
 ## Phase 2 — Independent Modeling
 
-> **Owner:** Each person works in parallel on their own method.
+> **Who:** Each works in parallel on their own method.
 > **Estimated time:** ~1–2 weeks each.
 
 ### Mihai's Tasks — Method A: LDA (~1.5 weeks)
@@ -283,7 +283,7 @@ While Mihai handles preprocessing, Tudor sets up the BERTopic side:
 
 ## Phase 3 — Joint Comparison
 
-> **Owner:** Both together
+> **Who:** Both together
 > **Estimated time:** ~3 days
 > **Goal:** Combine the two independent results into a fair comparison.
 
@@ -319,7 +319,7 @@ While Mihai handles preprocessing, Tudor sets up the BERTopic side:
 
 ## Phase 4 — Documentation
 
-> **Owner:** Both
+> **Who:** Both
 > **Estimated time:** ~1 week
 > **Goal:** Produce the final deliverable document.
 
@@ -354,7 +354,7 @@ While Mihai handles preprocessing, Tudor sets up the BERTopic side:
 
 ## Phase 5 — Presentation Prep
 
-> **Owner:** Both
+> **Who:** Both
 > **Estimated time:** ~3 days
 > **Goal:** Build slides for the project defense.
 

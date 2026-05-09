@@ -28,14 +28,14 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 │   ├── raw/             # MOROCO source files (gitignored)
 │   └── processed/       # train.parquet / test.parquet (gitignored)
 ├── notebooks/
-│   ├── 01_data_inspection.ipynb     # Mihai
-│   ├── 02_lda_full.ipynb            # Mihai
-│   └── 03_bertopic_full.ipynb       # Tudor — full T1–T7 pipeline
+│   ├── 01_data_inspection.ipynb     # MOROCO inspection
+│   ├── 02_lda_full.ipynb            # LDA pipeline
+│   └── 03_bertopic_full.ipynb       # BERTopic pipeline (T1–T7)
 ├── src/
 │   ├── paths.py         # shared filesystem paths
-│   ├── preprocessing/   # shared text loading, cleaning, tokenization (Mihai)
-│   ├── lda/             # LDA training + evaluation (Mihai)
-│   ├── bertopic/        # BERTopic pipeline + ablations (Tudor)
+│   ├── preprocessing/   # shared text loading, cleaning, tokenization
+│   ├── lda/             # LDA training + evaluation
+│   ├── bertopic/        # BERTopic pipeline + ablations
 │   │   ├── embeddings.py    # RoBERT mean-pool encoder
 │   │   ├── model.py         # BERTopicConfig + factory
 │   │   ├── training.py      # fit / save / load
@@ -58,9 +58,9 @@ See [`docs/Team_Task_Breakdown.md`](docs/Team_Task_Breakdown.md) for the full st
 └── README.md
 ```
 
-## Tudor's BERTopic CLI workflow
+## BERTopic CLI workflow
 
-Once Mihai's `data/processed/{train,test}.parquet` lands, run the whole Phase 2 pipeline:
+Once `data/processed/{train,test}.parquet` is available, run the whole Phase 2 pipeline:
 
 ```bash
 python scripts/encode_docs.py          # T1 — encode train + test with RoBERT
@@ -118,15 +118,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Per-person extras
+### 4. Per-method extras
 
-**Mihai (LDA):**
+**For LDA work:**
 ```bash
 python -m spacy download ro_core_news_sm
 ```
 
-**Tudor (BERTopic):**
-The first time you run `src/bertopic/`, the `readerbench/robert-base` model (~500MB) will be downloaded from HuggingFace into your local cache. You can pre-fetch it with:
+**For BERTopic work:**
+The first time `src/bertopic/` is run, the `readerbench/robert-base` model (~500MB) is downloaded from HuggingFace into the local cache. Pre-fetch with:
 ```bash
 python -c "from transformers import AutoModel, AutoTokenizer; AutoTokenizer.from_pretrained('readerbench/robert-base'); AutoModel.from_pretrained('readerbench/robert-base')"
 ```
@@ -135,14 +135,14 @@ python -c "from transformers import AutoModel, AutoTokenizer; AutoTokenizer.from
 
 ## Project phases
 
-| Phase | Description | Owner | Status |
-|---|---|---|---|
-| 0 | Joint setup (repo, env, deps) | Both | in progress |
-| 1 | Data preparation | Mihai writes, both use | not started |
-| 2 | Independent modeling | Mihai (LDA) / Tudor (BERTopic) | not started |
-| 3 | Joint comparison | Both | not started |
-| 4 | Final report | Both | not started |
-| 5 | Presentation | Both | not started |
+| Phase | Description | Status |
+|---|---|---|
+| 0 | Joint setup (repo, env, deps) | in progress |
+| 1 | Data preparation | not started |
+| 2 | Independent modeling (LDA + BERTopic) | not started |
+| 3 | Joint comparison | not started |
+| 4 | Final report | not started |
+| 5 | Presentation | not started |
 
 ---
 

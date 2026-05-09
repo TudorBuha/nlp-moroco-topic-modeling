@@ -1,4 +1,4 @@
-"""High-level BERTopic training (Tudor, Step T2).
+"""High-level BERTopic training (Step T2).
 
 This module is data-agnostic: it accepts already-loaded docs + embeddings
 and returns a fitted model. The CLI wrapper in `scripts/fit_bertopic.py`

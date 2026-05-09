@@ -1,4 +1,4 @@
-"""Tokenization + lemmatization. Owner: Mihai (Phase 1.5).
+"""Tokenization + lemmatization (Phase 1.5).
 
 Lemmatization is needed for **LDA only**; BERTopic consumes raw cleaned text.
 """
@@ -8,8 +8,8 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Iterable
 
-# A minimal Romanian stop-word list. Mihai: extend / replace with a fuller
-# list (e.g. from `stop-words` package or NLTK once you settle on one).
+# A minimal Romanian stop-word list. TODO: extend / replace with a fuller
+# list (e.g. from the `stop-words` package or NLTK) once one is chosen.
 _RO_STOPWORDS: set[str] = {
     "a", "ai", "al", "ale", "am", "ar", "are", "as", "așa", "așadar", "atât",
     "au", "aveau", "avem", "aveți", "ca", "cam", "care", "ce", "cea", "cel",

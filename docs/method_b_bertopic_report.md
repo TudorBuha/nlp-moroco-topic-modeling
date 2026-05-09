@@ -1,7 +1,6 @@
 # Method B — BERTopic on MOROCO
 
-**Author:** Buha Tudor
-**Companion of:** _Method A — LDA_ (Mihai)
+**Companion of:** _Method A — LDA report_
 **Status:** draft skeleton — fill in `_TBD_` after the pipeline runs end-to-end.
 
 This document is the source for **Section 6.2 (BERTopic Results)** of the joint report.

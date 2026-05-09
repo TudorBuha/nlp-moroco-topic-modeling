@@ -1,4 +1,4 @@
-"""Text cleaning utilities. Owner: Mihai (Phase 1.4)."""
+"""Text cleaning utilities (Phase 1.4)."""
 
 from __future__ import annotations
 

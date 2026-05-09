@@ -1,4 +1,4 @@
-"""Train/test split with stratification on topic. Owner: Mihai (Phase 1.6)."""
+"""Train/test split with stratification on topic (Phase 1.6)."""
 
 from __future__ import annotations
 

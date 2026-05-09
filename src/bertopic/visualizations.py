@@ -1,4 +1,4 @@
-"""BERTopic interactive HTML visualizations (Tudor, Step T3.5)."""
+"""BERTopic interactive HTML visualizations (Step T3.5)."""
 
 from __future__ import annotations
 

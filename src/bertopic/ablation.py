@@ -1,4 +1,4 @@
-"""Embedding ablation: RoBERT vs. multilingual MPNet (Tudor, Step T5).
+"""Embedding ablation: RoBERT vs. multilingual MPNet (Step T5).
 
 The MPNet model `sentence-transformers/paraphrase-multilingual-mpnet-base-v2`
 produces 768-d sentence embeddings already, so we use the

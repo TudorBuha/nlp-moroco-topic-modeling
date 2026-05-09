@@ -28,8 +28,7 @@ CELLS = [
     md(
         "# BERTopic — Full pipeline on MOROCO\n"
         "\n"
-        "**Author:** Buha Tudor — Method B (BERTopic)  \n"
-        "**Companion to** `02_lda_full.ipynb` (Mihai, LDA).\n"
+        "**Method B (BERTopic).** Companion to `02_lda_full.ipynb` (Method A — LDA).\n"
         "\n"
         "Walks through Steps **T1 → T7** of the project plan:\n"
         "\n"

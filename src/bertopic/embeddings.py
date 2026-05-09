@@ -1,4 +1,4 @@
-"""Sentence-level embeddings for Romanian text (Tudor, Phase 1 + T1).
+"""Sentence-level embeddings for Romanian text (Phase 1 + Step T1).
 
 Uses `readerbench/robert-base` by default, with mean-pooling over the last
 hidden state (masking out PAD tokens).

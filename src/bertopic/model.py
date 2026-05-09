@@ -1,4 +1,4 @@
-"""BERTopic model factory (Tudor, Phase 2 — Step T2)."""
+"""BERTopic model factory (Phase 2 — Step T2)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""C_v topic coherence for BERTopic (Tudor) — also reusable by LDA via the
+"""C_v topic coherence for BERTopic — also reusable by LDA via the
 shared evaluation module.
 
 Approach: extract the top-N keywords per BERTopic topic, then feed them

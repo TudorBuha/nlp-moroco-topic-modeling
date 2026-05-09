@@ -1,4 +1,4 @@
-"""Topic inspection utilities (Tudor, Step T3).
+"""Topic inspection utilities (Step T3).
 
 Helpers around `BERTopic.get_topic_info()` / `get_topic()` for producing
 keyword tables, counting outliers, and exporting CSVs."""

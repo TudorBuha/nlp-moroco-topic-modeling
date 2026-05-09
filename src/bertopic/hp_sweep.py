@@ -1,4 +1,4 @@
-"""Hyperparameter sensitivity sweep (Tudor, Step T4).
+"""Hyperparameter sensitivity sweep (Step T4).
 
 Sweeps `min_cluster_size ∈ {10, 20, 30, 50}` and `n_neighbors ∈ {5, 15, 30}`
 as required by the task spec, recording for each config:

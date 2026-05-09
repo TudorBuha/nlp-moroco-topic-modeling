@@ -1,4 +1,4 @@
-"""Test-set evaluation for the chosen BERTopic model (Tudor, Step T6)."""
+"""Test-set evaluation for the chosen BERTopic model (Step T6)."""
 
 from __future__ import annotations
 

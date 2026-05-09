@@ -1,4 +1,4 @@
-"""BERTopic pipeline (Tudor)."""
+"""BERTopic pipeline."""
 
 from .ablation import run_ablation, save_ablation
 from .coherence import compute_cv_coherence, topic_words_from_bertopic

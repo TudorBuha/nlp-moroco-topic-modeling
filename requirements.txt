@@ -10,12 +10,12 @@ scipy>=1.11
 pyarrow>=15.0          # parquet
 tqdm>=4.66
 
-# --- Classical NLP / LDA (Mihai) ---
+# --- Classical NLP / LDA ---
 gensim>=4.3
 spacy>=3.7             # then: python -m spacy download ro_core_news_sm
 pyLDAvis>=3.4
 
-# --- Embeddings + BERTopic (Tudor) ---
+# --- Embeddings + BERTopic ---
 torch>=2.2
 transformers>=4.40
 sentence-transformers>=2.7
