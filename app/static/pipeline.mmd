@@ -1,0 +1,34 @@
+flowchart TD
+    raw["MOROCO raw files"]:::data
+    subgraph prep["Preprocessing"]
+        load["load_moroco"]
+        clean["clean_text"]
+        split["stratified train test split"]
+    end
+    raw --> load --> clean --> split
+    train["train.parquet"]:::data
+    test["test.parquet"]:::data
+    split --> train
+    split --> test
+    subgraph lda["LDA pipeline"]
+        bow["BoW and Dictionary"]
+        ldaTrain["LdaModel K sweep"]
+    end
+    subgraph bert["BERTopic pipeline"]
+        embed["RoBERT embeddings"]
+        umap["UMAP"]
+        hdb["HDBSCAN"]
+        ctfidf["c-TF-IDF"]
+    end
+    train --> bow --> ldaTrain
+    train --> embed --> umap --> hdb --> ctfidf
+    subgraph eval["Shared evaluation"]
+        metrics["NMI and Purity and C_v"]
+    end
+    ldaTrain --> metrics
+    ctfidf --> metrics
+    test --> metrics
+    artifacts["results artifacts"]:::artifacts
+    metrics --> artifacts
+    classDef data fill:#e8f4f8,stroke:#2c7da0,color:#000;
+    classDef artifacts fill:#fff5e1,stroke:#e09f3e,color:#000;

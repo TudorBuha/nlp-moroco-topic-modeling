@@ -20,7 +20,18 @@ if str(_ROOT) not in sys.path:
 
 import streamlit as st
 
-from app.tabs import bertopic_tab, comparison, home, lda, stability, try_it
+from app.tabs import (
+    bertopic_tab,
+    comparison,
+    experiments,
+    home,
+    implementation,
+    lda,
+    problem,
+    solution,
+    stability,
+    try_it,
+)
 
 
 def main() -> None:
@@ -32,7 +43,7 @@ def main() -> None:
 
     with st.sidebar:
         st.markdown("### MOROCO topic modeling")
-        st.caption("BERTopic vs. LDA — interactive explorer.")
+        st.caption("BERTopic vs. LDA — project overview and interactive explorer.")
         st.markdown(
             "- [Repository](https://github.com/TudorBuha/nlp-moroco-topic-modeling)\n"
             "- [Architecture](https://github.com/TudorBuha/nlp-moroco-topic-modeling/blob/main/docs/architecture.md)\n"
@@ -41,15 +52,48 @@ def main() -> None:
         st.divider()
         st.caption(
             "If a tab shows a 'run X first' card, run the matching script under "
-            "`scripts/` to generate the missing artifact."
+            "`scripts/` to generate the missing artifact. The GUI does not retrain models."
+        )
+        st.caption(
+            "Diagrams on the Solution tab are pre-rendered SVG files under `app/static/`."
         )
 
-    tab_home, tab_try, tab_lda, tab_bertopic, tab_compare, tab_stability = st.tabs(
-        ["Home", "Try it live", "LDA explorer", "BERTopic explorer", "Comparison", "Stability"]
+    (
+        tab_home,
+        tab_problem,
+        tab_solution,
+        tab_impl,
+        tab_experiments,
+        tab_try,
+        tab_lda,
+        tab_bertopic,
+        tab_compare,
+        tab_stability,
+    ) = st.tabs(
+        [
+            "Home",
+            "Problem",
+            "Solution",
+            "Implementation",
+            "Experiments",
+            "Try it live",
+            "LDA explorer",
+            "BERTopic explorer",
+            "Comparison",
+            "Stability",
+        ]
     )
 
     with tab_home:
         home.render()
+    with tab_problem:
+        problem.render()
+    with tab_solution:
+        solution.render()
+    with tab_impl:
+        implementation.render()
+    with tab_experiments:
+        experiments.render()
     with tab_try:
         try_it.render()
     with tab_lda:

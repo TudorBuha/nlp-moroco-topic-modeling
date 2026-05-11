@@ -113,9 +113,13 @@ pip install -r requirements.txt   # streamlit is already in there
 streamlit run app/streamlit_app.py
 ```
 
-Then open the URL Streamlit prints (default `http://localhost:8501`). The app has six tabs:
+Then open the URL Streamlit prints (default `http://localhost:8501`). The app has ten tabs:
 
 - **Home** — project intro, dataset summary, headline metrics, pipeline status.
+- **Problem** — task definition and method ownership.
+- **Solution** — theory, MOROCO overview, and architecture diagrams.
+- **Implementation** — libraries, modules, and how to reproduce the pipelines.
+- **Experiments** — headline metrics, plots, and stability summaries.
 - **Try it live** — paste any Romanian news text and see the topic each model assigns.
 - **LDA explorer** — coherence curve, topic-keyword table, embedded `pyLDAvis`.
 - **BERTopic explorer** — topic-keyword table with search + the three interactive HTML viz.

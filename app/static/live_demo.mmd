@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant App as Streamlit
+    participant Prep as preprocessing
+    participant Lda as LDA
+    participant Enc as RoBERT
+    participant Bert as BERTopic
+    User->>App: paste Romanian news text
+    App->>Prep: clean_text
+    Prep-->>App: cleaned tokens
+    App->>Lda: BoW inference
+    Lda-->>App: top topic mixture
+    App->>Enc: encode text
+    Enc-->>App: embedding vector
+    App->>Bert: transform
+    Bert-->>App: topic id and keywords
+    App-->>User: side by side cards
