@@ -98,17 +98,6 @@ def render() -> None:
         "Paste Romanian news text and compare LDA vs. BERTopic predictions in real time.",
     )
 
-    with st.expander("Presentation walkthrough (~4 min)", expanded=False):
-        st.markdown(
-            """
-1. Click **Example: Politics**, then **Predict** — note human-readable topic names and keywords.
-2. Repeat for **Sports**, **Tech**, and **Finance** (one sentence each).
-3. Use **Science** and **Culture** to show coverage beyond the first four buttons.
-4. Mention that LDA returns a **mixture** (top-3) while BERTopic returns one cluster (+ outliers).
-5. Return to **4. Experiments** for metrics, confusion matrices, and stability if time allows.
-            """
-        )
-
     labels = list(EXAMPLES.items())
     row_a = st.columns(3)
     row_b = st.columns(3)

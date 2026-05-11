@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
 from .. import utils
@@ -26,10 +27,25 @@ Given a collection of documents, the goal is to:
 **Why it matters.** News archives are large and heterogeneous. Topic models help summarize what a corpus is about, compare editorial focus, and support downstream search or monitoring — without hand-labeling every article.
 
 **What we compare.** Two standard but very different families:
-
-- **Method A — LDA** — classical generative probabilistic topic model on bag-of-words inputs.
-- **Method B — BERTopic** — transformer embeddings, density clustering, and class-based TF-IDF for topic words.
-
-**Deliverable.** Trained models, comparable metrics on the same train/test split, and this Streamlit application for exploration and presentation (including the live demo).
         """
+    )
+
+    st.dataframe(
+        pd.DataFrame(
+            [
+                (
+                    "Method A — LDA — classical generative probabilistic topic model "
+                    "on bag-of-words inputs.",
+                    "Buha Tudor",
+                ),
+                (
+                    "Method B — BERTopic — transformer embeddings, density clustering, "
+                    "and class-based TF-IDF for topic words.",
+                    "Ciorascu Mihai",
+                ),
+            ],
+            columns=["Method", "Author"],
+        ),
+        hide_index=True,
+        use_container_width=True,
     )

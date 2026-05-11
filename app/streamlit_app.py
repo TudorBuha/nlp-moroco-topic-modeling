@@ -32,7 +32,6 @@ def main() -> None:
 
     with st.sidebar:
         st.markdown("### Presentation mode")
-        st.caption("Walk the numbered tabs top-to-bottom (~12–15 min).")
         st.markdown(
             "1. **Problem** — task definition\n"
             "2. **Solution** — theory, MOROCO, app diagram\n"
