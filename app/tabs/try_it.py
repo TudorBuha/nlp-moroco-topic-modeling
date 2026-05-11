@@ -17,33 +17,28 @@ from .. import utils
 
 EXAMPLES = {
     "Politics": (
-        "Guvernul a aprobat astăzi un nou proiect de lege privind "
-        "reforma sistemului public de pensii, care urmează să fie "
-        "dezbătut în Parlament săptămâna viitoare."
+        "Președintele a convocat o ședință de urgență a Guvernului pentru a "
+        "discuta măsurile de securitate energetică propuse de ministerele de resort."
     ),
     "Sports": (
-        "Echipa națională a României a câștigat meciul de calificare "
-        "la Campionatul European cu scorul de 3-1, după trei goluri "
-        "marcate în repriza a doua."
+        "FCSB a învins cu 2-0 echipa din deplasare, după goluri marcate de "
+        "atacantul titular în minutele 55 și 78."
     ),
     "Tech": (
-        "O nouă aplicație mobilă dezvoltată în România folosește "
-        "inteligența artificială pentru a traduce automat conversațiile "
-        "în limba română în peste 30 de limbi."
+        "Compania de tehnologie a lansat un smartphone cu procesor nou, ecran "
+        "OLED și cameră de 200 de megapixeli, disponibil din luna viitoare."
     ),
     "Finance": (
-        "Banca Națională a anunțat o nouă creștere a ratei dobânzii "
-        "de referință, după ce inflația anuală a depășit nivelul prognozat "
-        "pentru luna trecută."
+        "Banca română anunță faptul că euro crește la 5,22 lei, iar analiștii "
+        "estimează presiuni suplimentare pe piața valutară."
     ),
     "Science": (
-        "Cercetătorii de la o universitate din București au publicat un studiu "
-        "despre efectele schimbărilor climatice asupra agriculturii din sudul "
-        "României."
+        "Astronomii români au observat o cometă rară cu telescopul de la "
+        "observatorul din Cluj, publicând date spectrale în revista științifică."
     ),
     "Culture": (
-        "Festivalul de film de la Cluj a anunțat selecția oficială pentru "
-        "ediția din acest an, cu premiere românești și proiecții în aer liber."
+        "Muzeul Național de Artă din București inaugurează o expoziție dedicată "
+        "pictorilor români din secolul al XX-lea, cu lucrări restaurate recent."
     ),
 }
 
@@ -94,7 +89,7 @@ def _render_card(title: str, body) -> None:
 
 def render() -> None:
     utils.section_header(
-        "5. Live demo",
+        "Try it live",
         "Paste Romanian news text and compare LDA vs. BERTopic predictions in real time.",
     )
 
@@ -104,14 +99,17 @@ def render() -> None:
     if "try_it_text" not in st.session_state:
         st.session_state["try_it_text"] = labels[0][1]
     for col, (label, text) in zip(row_a + row_b, labels):
-        if col.button(f"Example: {label}", use_container_width=True):
+        if col.button(
+            f"Example: {label}",
+            use_container_width=True,
+            key=f"try_it_example_{label.lower()}",
+        ):
             st.session_state["try_it_text"] = text
 
     text = st.text_area(
         "Romanian text",
-        value=st.session_state["try_it_text"],
         height=160,
-        key="try_it_text_area",
+        key="try_it_text",
     )
 
     if not st.button("Predict", type="primary"):

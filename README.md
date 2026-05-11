@@ -106,7 +106,7 @@ The notebooks `notebooks/03_bertopic_full.ipynb` and `notebooks/02_lda_full.ipyn
 
 ## Application (GUI — assignment §2.3)
 
-The presentation deliverable is an interactive Streamlit app that wraps both trained models:
+The interactive Streamlit app wraps both trained models:
 
 ```bash
 pip install -r requirements.txt   # streamlit is already in there
@@ -122,7 +122,7 @@ Then open the URL Streamlit prints (default `http://localhost:8501`). The app ha
 - **Comparison** — side-by-side metrics, confusion matrices, embedding ablation.
 - **Stability** — multi-seed runs, bootstrap 95 % CIs, hyperparameter sweep.
 
-The app is a **read-only frontend** over the saved artifacts in `results/`. If a step hasn't been run yet, the corresponding tab shows a friendly *"run X first"* card instead of crashing — so the demo is robust during the presentation.
+The app is a **read-only frontend** over the saved artifacts in `results/`. If a step hasn't been run yet, the corresponding tab shows a friendly *"run X first"* card instead of crashing.
 
 See [`docs/architecture.md`](docs/architecture.md) for the full architecture diagram (Mermaid).
 
@@ -189,7 +189,7 @@ python -c "from transformers import AutoModel, AutoTokenizer; AutoTokenizer.from
 | 2 | Independent modeling (LDA + BERTopic) | done — both pipelines run end-to-end |
 | 3 | Joint comparison                      | done — see `docs/report.md` §4.4 |
 | 4 | Final report                          | done — `docs/report.md` |
-| 5 | Presentation                          | done — `streamlit run app/streamlit_app.py` |
+| 5 | Application (Streamlit)               | done — `streamlit run app/streamlit_app.py` |
 
 ### Headline numbers (1,000 docs / class subset, 80 / 20 split, seed 42)
 

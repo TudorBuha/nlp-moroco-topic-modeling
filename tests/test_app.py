@@ -20,12 +20,8 @@ def test_app_modules_import():
     from app.tabs import (  # noqa: F401
         bertopic_tab,
         comparison,
-        experiments,
         home,
-        implementation,
         lda,
-        problem,
-        solution,
         stability,
         try_it,
     )
@@ -81,25 +77,11 @@ def test_streamlit_app_main_callable():
     assert callable(main)
 
 
-def test_presentation_diagram_svgs_exist():
-    from pathlib import Path
-
-    static = Path(__file__).resolve().parents[1] / "app" / "static"
-    for name in ("pipeline", "application", "live_demo"):
-        svg = static / f"{name}.svg"
-        assert svg.exists(), f"missing {svg}"
-        assert svg.read_text(encoding="utf-8").lstrip().startswith("<svg")
-
-
 @pytest.mark.parametrize(
     "tab_module",
     [
-        "app.tabs.problem",
-        "app.tabs.solution",
-        "app.tabs.implementation",
-        "app.tabs.experiments",
-        "app.tabs.try_it",
         "app.tabs.home",
+        "app.tabs.try_it",
         "app.tabs.lda",
         "app.tabs.bertopic_tab",
         "app.tabs.comparison",
