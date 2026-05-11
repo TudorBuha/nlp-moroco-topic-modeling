@@ -1,0 +1,30 @@
+flowchart LR
+    user(["User browser"]):::user
+    subgraph uiApp["Streamlit app"]
+        direction TB
+        problem["1 Problem"]
+        solution["2 Solution"]
+        implementation["3 Implementation"]
+        experiments["4 Experiments"]
+        demo["5 Live demo"]
+        loaders["artifact loaders"]
+    end
+    subgraph cache["Cached models"]
+        ldaModel["LDA and dictionary"]
+        bertModel["BERTopic"]
+        robert["RoBERT encoder"]
+    end
+    subgraph saved["Saved results"]
+        csv["topic tables and metrics"]
+        htmlviz["pyLDAvis and Plotly HTML"]
+    end
+    user --> problem
+    problem --> loaders
+    solution --> loaders
+    experiments --> loaders
+    demo --> ldaModel
+    demo --> bertModel
+    demo --> robert
+    loaders --> csv
+    loaders --> htmlviz
+    classDef user fill:#dde7c7,stroke:#6b8e23,color:#000;

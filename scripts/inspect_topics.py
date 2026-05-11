@@ -13,7 +13,12 @@ import argparse
 import _bootstrap  # noqa: F401
 
 from src import paths
-from src.bertopic.inspection import save_topic_table, topic_keyword_table
+from src.bertopic.gui_labels import DEFAULT_BERTOPIC_GUI_LABELS
+from src.bertopic.inspection import (
+    attach_manual_labels,
+    save_topic_table,
+    topic_keyword_table,
+)
 from src.bertopic.training import load_model
 from src.bertopic.visualizations import save_default_visualizations
 
@@ -40,6 +45,10 @@ def main() -> int:
 
     out_csv = save_topic_table(model, paths.TOPIC_TABLE_CSV, top_k=args.top_k)
     print(f"\nsaved topic table -> {out_csv}")
+
+    labeled = attach_manual_labels(table, DEFAULT_BERTOPIC_GUI_LABELS)
+    labeled.to_csv(paths.TOPIC_TABLE_LABELED_CSV, index=False, encoding="utf-8")
+    print(f"saved labeled table -> {paths.TOPIC_TABLE_LABELED_CSV}")
 
     saved = save_default_visualizations(model, paths.RESULTS_BERTOPIC)
     print(f"\nvisualizations: {sorted(saved.keys())}")

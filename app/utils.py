@@ -66,21 +66,36 @@ def load_html_or_none(path: str | Path) -> str | None:
     return p.read_text(encoding="utf-8")
 
 
+_LABEL_COLUMNS = ("gui_label", "manual_label", "label")
+
+
+def _merge_labels_from_csv(
+    defaults: dict[int, str],
+    csv_path,
+) -> dict[int, str]:
+    merged = {int(k): str(v) for k, v in defaults.items()}
+    df = load_csv_or_none(csv_path)
+    if df is None:
+        return merged
+    label_col = next((c for c in _LABEL_COLUMNS if c in df.columns), None)
+    if label_col is None or "topic_id" not in df.columns:
+        return merged
+    for _, row in df.iterrows():
+        tid = int(row["topic_id"])
+        lbl = str(row.get(label_col, "") or "").strip()
+        if lbl:
+            merged[tid] = lbl
+    return merged
+
+
 @_cache_data
 def lda_topic_label_map() -> dict[int, str]:
     """Merge built-in LDA GUI labels with optional overrides from topic_keywords_labeled.csv."""
     from src.lda.gui_labels import DEFAULT_LDA_GUI_LABELS
 
-    merged: dict[int, str] = {int(k): str(v) for k, v in DEFAULT_LDA_GUI_LABELS.items()}
-    df = load_csv_or_none(paths.LDA_TOPIC_TABLE_LABELED_CSV)
-    if df is None or "label" not in df.columns:
-        return merged
-    for _, row in df.iterrows():
-        tid = int(row["topic_id"])
-        lbl = str(row.get("label", "") or "").strip()
-        if lbl:
-            merged[tid] = lbl
-    return merged
+    return _merge_labels_from_csv(
+        DEFAULT_LDA_GUI_LABELS, paths.LDA_TOPIC_TABLE_LABELED_CSV
+    )
 
 
 def lda_topic_display_name(topic_id: int) -> str:
@@ -88,6 +103,27 @@ def lda_topic_display_name(topic_id: int) -> str:
     m = lda_topic_label_map()
     tid = int(topic_id)
     return m.get(tid, f"Topic {tid}")
+
+
+@_cache_data
+def bertopic_topic_label_map() -> dict[int, str]:
+    """Merge built-in BERTopic GUI labels with optional overrides from labeled CSV."""
+    from src.bertopic.gui_labels import DEFAULT_BERTOPIC_GUI_LABELS
+
+    return _merge_labels_from_csv(
+        DEFAULT_BERTOPIC_GUI_LABELS, paths.TOPIC_TABLE_LABELED_CSV
+    )
+
+
+def bertopic_topic_display_name(topic_id: int) -> str:
+    """Human-readable BERTopic topic name; outliers get a special label."""
+    m = bertopic_topic_label_map()
+    tid = int(topic_id)
+    if tid in m:
+        return m[tid]
+    if tid == -1:
+        return "Outlier (no clear topic)"
+    return f"Topic {tid}"
 
 
 def missing_artifact(path: str | Path, suggestion: str) -> None:

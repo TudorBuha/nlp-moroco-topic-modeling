@@ -1,0 +1,21 @@
+topic_id,count,name,top_keywords,manual_label
+-1,718,-1_şi_că_va_când,"şi, că, va, când, dintre, până, ani, dacă, acest, două",Outlier (no clear topic)
+0,1079,0_că_va_cadrul_şi,"că, va, cadrul, şi, acest, despre, astăzi, către, transmite, loc",General news prose
+1,666,1_şi_va_că_meci,"şi, va, că, meci, locul, primul, ani, două, scorul, meciul",Sports — matches & scores
+2,536,2_in_si_dupa_daca,"in, si, dupa, daca, pana, ani, va, doua, aceasta, fata",General prose (ASCII spelling)
+3,348,3_că_va_putea_poate,"că, va, putea, poate, acest, ani, dacă, știință, pot, până",Science / opinion
+4,308,4_şi_că_va_ani,"şi, că, va, ani, foarte, era, acest, când, cei, dintre",Generic / filler
+5,249,5_şi_că_putea_ştiinţă,"şi, că, putea, ştiinţă, cercetătorii, va, dintre, studiu, ani, unui",Science — research & studies
+6,158,6_şi_că_preşedintele_dacă,"şi, că, preşedintele, dacă, spus, va, ministru, trebuie, declarat, această",Politics — government statements
+7,102,7_sînt_că_cînd_va,"sînt, că, cînd, va, știință, oamenii, decît, poate, cercetătorii, pînă",Science (Moldavian spelling)
+8,91,8_că_spus_dacă_despre,"că, spus, dacă, despre, trebuie, vă, președintele, şi, privind, va",Politics — official quotes
+9,83,9_şi_va_smartphone_putea,"şi, va, smartphone, putea, go4it, uri, scrie go4it, go4it ro, însă, telefonul",Tech — smartphones
+10,67,10_şi_că_datelor_utilizatori,"şi, că, datelor, utilizatori, informaţii, datele, utilizatorilor, milioane, conturi, personale",Tech — data & privacy
+11,62,11_şi_că_sînt_cînd,"şi, că, sînt, cînd, cercetătorii, decît, poate, acest, atunci cînd, studiu","Science (Moldavian spelling, variant)"
+12,59,12_şi_lei_euro_000,"şi, lei, euro, 000, că, milioane, miliarde, anul, 2017, va",Finance — currency amounts
+13,53,13_ani_şi_faţa locului_locului,"ani, şi, faţa locului, locului, faţa, că, poliţiştii, autoturism, ani şi, accident",Accidents & police incidents
+14,52,14_ani_că_spital_doi,"ani, că, spital, doi, bărbatul, bărbat, mama, fața, vârstă, cei doi",Crime / hospital news
+15,49,15_că_lei_va_dacă,"că, lei, va, dacă, mediu, putea, venituri, minim, ani, către",Economy — wages & income
+16,35,16_şi_maşini_auto_că,"şi, maşini, auto, că, magazine, producţie, va, 000, compania, milioane",Automotive — cars & production
+17,35,17_grade_va_şi_temperaturile,"grade, va, şi, temperaturile, vremea, vremea va, medie, până, munte, sud",Weather — temperatures & forecast
+18,35,18_bani_lei_lei şi_bani şi,"bani, lei, lei şi, bani şi, curs, moneda, valoarea, unică, patru, românesc",Currency & exchange rate

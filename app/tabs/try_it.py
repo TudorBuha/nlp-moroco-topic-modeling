@@ -36,6 +36,15 @@ EXAMPLES = {
         "de referință, după ce inflația anuală a depășit nivelul prognozat "
         "pentru luna trecută."
     ),
+    "Science": (
+        "Cercetătorii de la o universitate din București au publicat un studiu "
+        "despre efectele schimbărilor climatice asupra agriculturii din sudul "
+        "României."
+    ),
+    "Culture": (
+        "Festivalul de film de la Cluj a anunțat selecția oficială pentru "
+        "ediția din acest an, cu premiere românești și proiecții în aer liber."
+    ),
 }
 
 
@@ -85,14 +94,27 @@ def _render_card(title: str, body) -> None:
 
 def render() -> None:
     utils.section_header(
-        "Try it live",
-        "Paste any Romanian news article and see what topic each model assigns.",
+        "5. Live demo",
+        "Paste Romanian news text and compare LDA vs. BERTopic predictions in real time.",
     )
 
-    col_examples = st.columns(len(EXAMPLES))
+    with st.expander("Presentation walkthrough (~4 min)", expanded=False):
+        st.markdown(
+            """
+1. Click **Example: Politics**, then **Predict** — note human-readable topic names and keywords.
+2. Repeat for **Sports**, **Tech**, and **Finance** (one sentence each).
+3. Use **Science** and **Culture** to show coverage beyond the first four buttons.
+4. Mention that LDA returns a **mixture** (top-3) while BERTopic returns one cluster (+ outliers).
+5. Return to **4. Experiments** for metrics, confusion matrices, and stability if time allows.
+            """
+        )
+
+    labels = list(EXAMPLES.items())
+    row_a = st.columns(3)
+    row_b = st.columns(3)
     if "try_it_text" not in st.session_state:
-        st.session_state["try_it_text"] = list(EXAMPLES.values())[0]
-    for col, (label, text) in zip(col_examples, EXAMPLES.items()):
+        st.session_state["try_it_text"] = labels[0][1]
+    for col, (label, text) in zip(row_a + row_b, labels):
         if col.button(f"Example: {label}", use_container_width=True):
             st.session_state["try_it_text"] = text
 
@@ -125,8 +147,8 @@ def render() -> None:
                 )
                 return
             tid = pred["topic_id"]
-            label = "🚫 outlier topic" if tid == -1 else f"Topic **#{tid}**"
-            st.markdown(label)
+            name = utils.bertopic_topic_display_name(tid)
+            st.markdown(f"**{name}** · `topic_id={tid}`")
             if pred["keywords"]:
                 st.markdown("**Top keywords:** " + ", ".join(pred["keywords"]))
             if not np.isnan(pred["probability"]):

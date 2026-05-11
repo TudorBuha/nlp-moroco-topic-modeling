@@ -18,9 +18,7 @@ VIZ_FILES = {
 
 
 def _render_table_with_search() -> None:
-    table = utils.load_csv_or_none(
-        paths.RESULTS_BERTOPIC / "topic_keywords_labeled.csv"
-    )
+    table = utils.load_csv_or_none(paths.TOPIC_TABLE_LABELED_CSV)
     if table is None:
         table = utils.load_csv_or_none(paths.TOPIC_TABLE_CSV)
 
@@ -30,17 +28,32 @@ def _render_table_with_search() -> None:
         )
         return
 
+    table = table.copy()
+    labels = utils.bertopic_topic_label_map()
+    table.insert(
+        0,
+        "topic_name",
+        table["topic_id"].map(
+            lambda tid: labels.get(int(tid), utils.bertopic_topic_display_name(int(tid)))
+        ),
+    )
+    st.caption(
+        "**topic_name** is a manual GUI label; **topic_id** is the BERTopic "
+        "cluster id (`-1` is the outlier). Edit labels in "
+        "`results/bertopic/topic_keywords_labeled.csv` or `src/bertopic/gui_labels.py`."
+    )
+
     query = st.text_input(
-        "Filter by keyword (Romanian)",
-        placeholder="e.g. politic, fotbal, banca, calculator…",
+        "Filter by keyword or name",
+        placeholder="e.g. politic, fotbal, weather, smartphone…",
     ).strip().lower()
     filtered = table
     if query:
-        filtered = table[
-            table["top_keywords"].fillna("").str.lower().str.contains(query, na=False)
-        ]
+        in_keywords = table["top_keywords"].fillna("").str.lower().str.contains(query, na=False)
+        in_name = table["topic_name"].fillna("").str.lower().str.contains(query, na=False)
+        filtered = table[in_keywords | in_name]
         if filtered.empty:
-            st.warning(f"No topic contains the keyword `{query}`.")
+            st.warning(f"No topic contains `{query}`.")
             return
 
     st.dataframe(filtered, hide_index=True, use_container_width=True)

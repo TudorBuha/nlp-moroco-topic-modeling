@@ -4,9 +4,8 @@ Run with:
 
     streamlit run app/streamlit_app.py
 
-The app is a read-only frontend over the artifacts produced by the CLI
-pipeline in `scripts/`. Each tab gracefully handles missing artifacts
-so the demo never crashes mid-presentation.
+The app doubles as the live presentation: assignment sections 1–4 plus a live demo tab.
+Each tab gracefully handles missing artifacts so the demo never crashes mid-presentation.
 """
 
 from __future__ import annotations
@@ -21,7 +20,7 @@ if str(_ROOT) not in sys.path:
 
 import streamlit as st
 
-from app.tabs import bertopic_tab, comparison, home, lda, stability, try_it
+from app.tabs import experiments, implementation, problem, solution, try_it
 
 
 def main() -> None:
@@ -32,38 +31,58 @@ def main() -> None:
     )
 
     with st.sidebar:
-        st.markdown("### MOROCO topic modeling")
-        st.caption("BERTopic vs. LDA — NLP project demo.")
+        st.markdown("### Presentation mode")
+        st.caption("Walk the numbered tabs top-to-bottom (~12–15 min).")
+        st.markdown(
+            "1. **Problem** — task definition\n"
+            "2. **Solution** — theory, MOROCO, app diagram\n"
+            "3. **Implementation** — libraries and modules\n"
+            "4. **Experiments** — metrics, plots, stability\n"
+            "5. **Live demo** — Romanian examples + Predict"
+        )
+        st.divider()
+        st.markdown("### Links")
         st.markdown(
             "- [Repository](https://github.com/TudorBuha/nlp-moroco-topic-modeling)\n"
-            "- [Architecture (§2.3)](https://github.com/TudorBuha/nlp-moroco-topic-modeling/blob/main/docs/architecture.md)\n"
-            "- [Final report draft](https://github.com/TudorBuha/nlp-moroco-topic-modeling/blob/main/docs/report.md)\n"
+            "- [Architecture notes](https://github.com/TudorBuha/nlp-moroco-topic-modeling/blob/main/docs/architecture.md)\n"
+            "- [Written report](https://github.com/TudorBuha/nlp-moroco-topic-modeling/blob/main/docs/report.md)\n"
         )
         st.divider()
         st.caption(
-            "If a tab shows a 'run X first' card, it just means the "
-            "corresponding pipeline step hasn't been executed yet. "
-            "Run `python scripts/run_bertopic_pipeline.py` to produce "
-            "all BERTopic artifacts in one go."
+            "Missing artifacts show a friendly *run X first* card instead of crashing. "
+            "The GUI does not retrain models."
+        )
+        st.caption(
+            "Diagrams in **2. Solution** are pre-rendered SVG files under `app/static/` "
+            "(no live Mermaid CDN). There is no long-running training job in the background."
         )
 
-    tab_home, tab_try, tab_lda, tab_bertopic, tab_compare, tab_stability = st.tabs(
-        ["Home", "Try it live", "LDA explorer", "BERTopic explorer",
-         "Comparison", "Stability"]
+    (
+        tab_problem,
+        tab_solution,
+        tab_impl,
+        tab_experiments,
+        tab_demo,
+    ) = st.tabs(
+        [
+            "1. Problem",
+            "2. Solution",
+            "3. Implementation",
+            "4. Experiments",
+            "5. Live demo",
+        ]
     )
 
-    with tab_home:
-        home.render()
-    with tab_try:
+    with tab_problem:
+        problem.render()
+    with tab_solution:
+        solution.render()
+    with tab_impl:
+        implementation.render()
+    with tab_experiments:
+        experiments.render()
+    with tab_demo:
         try_it.render()
-    with tab_lda:
-        lda.render()
-    with tab_bertopic:
-        bertopic_tab.render()
-    with tab_compare:
-        comparison.render()
-    with tab_stability:
-        stability.render()
 
 
 if __name__ == "__main__":
